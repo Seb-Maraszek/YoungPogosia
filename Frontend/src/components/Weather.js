@@ -65,14 +65,18 @@ class Weather extends React.Component {
   }
 
   getWeatherByLoc = async (position) => {
-    
+    const api_call = await fetch(
+      `https://127.0.0.1:8000/weather/coords/?lat=${position.coords.latitude}&lon=${position.coords.longitude}&user_uuid=123123123`
+    );
+    const response = await api_call.json();
+    this.getResults(response);
   };
 
   getWeather = async (e) => { 
     e.preventDefault();
     const city = e.target.elements.city.value;
     if (city !== "") {
-      const api_call = await fetch(`https://localhost:8000/weather/city/?city=${city}`);
+      const api_call = await fetch(`http://localhost:8000/weather/city/?city=${city}`);
       const response = await api_call.json();
       if (response.cod === "404") {
         this.setState({

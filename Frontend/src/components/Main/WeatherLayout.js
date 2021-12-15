@@ -15,6 +15,8 @@ import { Link } from "react-router-dom";
 import Paper from "@mui/material/Paper";
 import MuiAlert from "@material-ui/lab/Alert";
 import Snackbar from "@material-ui/core/Snackbar";
+import { Hidden } from "@mui/material";
+import SearchDesktop from "./SearchDesktop";
 
 const useStyles = makeStyles((theme) => ({
   topNav: {
@@ -146,6 +148,13 @@ export default function WeatherLayout(props) {
               </Typography>
             </div>
           </Container>
+
+          <Hidden smDown>
+            <div className={classes.desktopSearch}>
+              <SearchDesktop loadWeather={props.loadWeather} />
+            </div>
+          </Hidden>
+
           <div className={classes.hourly}>
             <Paper className={classes.topPage}>
               <Container>
