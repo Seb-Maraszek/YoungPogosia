@@ -18,7 +18,8 @@ import {
   faCloud,
   faBolt,
 } from '@fortawesome/free-solid-svg-icons'
-
+import FavoritesLayout from './Favorites/FavoritesLayout'
+import SearchOverlay from './Main/SearchOverlay'
 class Weather extends React.Component {
   constructor() {
     super()
@@ -63,11 +64,25 @@ class Weather extends React.Component {
     }
   }
 
-  getWeatherByLoc = async (position) => {}
+  getWeatherByLoc = async (position) => {
+    
+  };
 
-  getWeather = async (e) => {
-
-  }
+  getWeather = async (e) => { 
+    e.preventDefault();
+    const city = e.target.elements.city.value;
+    if (city !== "") {
+      const api_call = await fetch(`https://localhost:8000/weather/city/?city=${city}`);
+      const response = await api_call.json();
+      if (response.cod === "404") {
+        this.setState({
+          error: true,
+        });
+      } else {
+        this.getResults(response);
+      }
+    }
+  };
 
   getResults(response) {
     this.setState({
@@ -210,6 +225,27 @@ class Weather extends React.Component {
               handleNavClick={this.handleNavClick}
               handleErrorClose={this.handleErrorClose}
               getWeatherByLoc={this.getWeatherByLoc}
+            />
+            <SearchOverlay
+              loadWeather={this.getWeather}
+              error={this.state.error}
+              handleSearchOpen={this.handleSearchOpen}
+              openSearch={this.state.openSearch}
+              handleNavClick={this.handleNavClick}
+              textInput={this.textInput}
+            />
+          </Route>
+          <Route path="/favorites">
+            <FavoritesLayout
+              favList={this.state.favList}
+              handleNavClick={this.handleNavClick}
+              loadWeather={this.getWeather}
+              favoritesWidget={this.state.favoritesWidget}
+              weatherIcon={this.weatherIcon}
+              error={this.state.error}
+              handleErrorClose={this.handleErrorClose}
+              warning={this.state.warning}
+              handleDeletion={this.handleDeletion}
             />
           </Route>
         </Switch>
