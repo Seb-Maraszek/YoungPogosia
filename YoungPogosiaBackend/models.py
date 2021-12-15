@@ -1,6 +1,9 @@
 import json
+import time
+from contextlib import contextmanager
 from dataclasses import dataclass, asdict
-
+from datetime import datetime
+from time import perf_counter
 from uuid import uuid4
 
 
@@ -13,8 +16,13 @@ class YoungPogosiaDataModel:
 @dataclass
 class User(YoungPogosiaDataModel):
     id: uuid4
-    default_lat: float
-    default_long: float
+
+
+@dataclass
+class TimeSpentOnRequest(YoungPogosiaDataModel):
+    spent_time: float
+    request: str
+    user_uuid: str
 
 
 @dataclass

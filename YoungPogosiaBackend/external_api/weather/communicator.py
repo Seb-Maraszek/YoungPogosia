@@ -3,8 +3,8 @@ from abc import ABC, abstractmethod
 
 import requests
 
-RAPID_API_HOST = os.getenv("RAPID_API_HOST")
-RAPID_API_KEY = os.getenv("RAPID_API_KEY")
+RAPID_API_HOST = "community-open-weather-map.p.rapidapi.com"
+RAPID_API_KEY = "40deed2ff4mshdd7a9e52c1d13a5p1ac846jsn9def6b584dfb"
 
 
 class ExternalAPI(ABC):
@@ -20,10 +20,19 @@ class ExternalAPI(ABC):
     def current_weather_query(self):
         pass
 
-    @abstractmethod
     def get_current_weather(self):
-        query = self.current_weather_query()
-        return requests.get(url=query['url'])
+        url = "https://community-open-weather-map.p.rapidapi.com/weather"
+
+        querystring = {"q": "London,uk", "lat": "0", "lon": "0", "callback": "test", "id": "2172797", "lang": "null",
+                       "units": "imperial", "mode": "xml"}
+
+        headers = {
+            'x-rapidapi-host': "community-open-weather-map.p.rapidapi.com",
+            'x-rapidapi-key': "40deed2ff4mshdd7a9e52c1d13a5p1ac846jsn9def6b584dfb"
+        }
+
+        response = requests.request("GET", url, headers=headers, params=querystring)
+        return
 
     @property
     @abstractmethod
@@ -43,8 +52,4 @@ class ExternalAPI(ABC):
     @property
     @abstractmethod
     def url(self):
-        pass
-
-    @abstractmethod
-    def construct_query(self):
         pass
